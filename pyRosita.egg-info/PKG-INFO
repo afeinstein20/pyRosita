@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: pyRosita
+Version: 0.0.1
+Summary: Python tools for eRosita Data
+Home-page: http://github.com/afeinstein20/pyRosita
+Author: Adina D. Feinstein
+Author-email: adina.d.feinstein@gmail.com
+License: MIT
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+
+A simple Python wrapper for using eRosita data.
+Read the documentation at https://adina.feinste.in/pyrosita.
+

@@ -1,0 +1,9 @@
+.gitattributes
+LICENSE
+setup.py
+pyRosita/version.py
+pyRosita.egg-info/PKG-INFO
+pyRosita.egg-info/SOURCES.txt
+pyRosita.egg-info/dependency_links.txt
+pyRosita.egg-info/requires.txt
+pyRosita.egg-info/top_level.txt
