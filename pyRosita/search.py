@@ -36,24 +36,56 @@ class SearchImages(object):
             self.get_coordinates()
 
         self.fn_dir = os.path.join(os.path.expanduser('~'), '.pyRosita')
+        self.catalog_fn = 'eRASS1_Main.v1.1.fits'
         self.skytile_fn = 'SKYMAPS_052022_MPE.fits'
 
-        if os.path.isfile(os.path.join(self.fn_dir, self.skytile_fn)):
-            self.open_catalog()
+        if os.path.isfile(os.path.join(self.fn_dir, self.catalog_fn)):
+            self.open_source_catalog()
         else:
-            self.download_catalog()
-            self.open_catalog()
+            self.download_source_catalog()
+            #self.open_source_catalog()
+
+        if os.path.isfile(os.path.join(self.fn_dir, self.skytile_fn)):
+            self.open_skytile_catalog()
+        else:
+            self.download_skytile_catalog()
+            self.open_skytile_catalog()
 
 
-    def download_catalog(self):
+    def download_source_catalog(self):
+        """
+        Downloads the source catalog from eRosita DR1.
+
+        Attributes
+        ----------
+        catalog_fn : str
+           Filename of the Source catalog.
+        """
+        url = 'https://erosita.mpe.mpg.de/dr1/AllSkySurveyData_dr1/Catalogues_dr1/MerloniA_DR1/eRASS1_Main.tar.gz'
+
+        if not os.path.exists(self.fn_dir):
+            try:
+                os.mkdir(self.fn_dir)
+            except OSError:
+                self.fn_dir = '.'
+                warnings.warn('Warning: unable to create {}. '
+                              'Downloading to the current '
+                              'working directory instead.'.format(self.fn_dir))
+        os.system('curl -L {0} -o {1}'.format(url,
+                                              os.path.join(self.fn_dir, 'eRASS1_Main.tar.gz')))
+        os.system('tar -xvzf {0}'.format(os.path.join(self.fn_dir,
+                                                             'eRASS1_Main.tar.gz')))
+        os.system('mv {0} {1}'.format(self.catalog_fn,
+                                      os.path.join(self.fn_dir, self.catalog_fn)))
+
+
+    def download_skytile_catalog(self):
         """
         Download the FITS file with the center (RA, Dec) and edges (RA, Dec) of
         each SkyTile available.
 
         Attributes
         ----------
-        fn_dir : str
-           Path location where the FITS catalog is saved.
         skytile_fn : str
            Filename of the FITS catalog.
         """
@@ -71,7 +103,7 @@ class SearchImages(object):
                                               os.path.join(self.fn_dir,
                                                            self.skytile_fn)))
 
-    def open_catalog(self):
+    def open_skytile_catalog(self):
         """
         Opens the SkyTile catalog.
 
@@ -127,7 +159,7 @@ class SearchImages(object):
            Array of 0s or 1s depending on if the target has a matching SkyTile.
            0 = not a match; 1 = a match.
         """
-        tile_numbers = np.zeros(len(self.coords), dtype=int)
+        tile_numbers = np.zeros(len(self.coords), dtype='U6')
         separation   = np.zeros(len(self.coords))
         match = np.zeros(len(self.coords), dtype=bool)
 
@@ -146,3 +178,17 @@ class SearchImages(object):
         self.match = match
 
         return
+
+    def download_skytile(self, which_sources='all'):
+        """
+        Downloads the full SkyTile for a given target
+
+        Parameters
+        ----------
+        which_sources : np.array, optional
+           Sets which targets to download the data products for. Default is all
+           targets under `self.coords` or `self.name`. If you do not data for
+           all of the targets, pass in a `np.array` of integers for which indices
+           the code should download.
+        """
+        return('This is a WIP.')
