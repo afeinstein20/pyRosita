@@ -6,7 +6,7 @@
 <div align="justify">
 pyROSITA is a cute little Python wrapper for using eROSITA DR1 data.
 
-To install eleanor with pip:
+To install pyRosita with pip:
 
         pip install pyRosita
 
